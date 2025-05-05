@@ -11,24 +11,36 @@ from scratch, including custom on-disk data structures, hash table serialization
 
 ## Project Structure
  
--Indexing Pipeline
+Indexing Pipeline:
+
 `CrawlFileTree.c`: Recursively traverses a directory to gather documents.
 
 `FileParser.c`, `DocTable.c`, `MemIndex.c`: Tokenize files, assign document IDs, and construct an in-memory inverted index.
 
 `WriteIndex.c`: Serializes the in-memory index to a compact, binary format with a CRC checksum.
 
-Search Engine
+Search Engine:
 `QueryProcessor.`: Loads one or more index files and performs ranked multi-word queries.
 
 `searchshell.c`: Interactive shell for CLI-based search.
 
-HTTP Search Server
+HTTP Search Server:
+
 `http333d.cc`, `HttpServer.cc`, `HttpConnection.cc`: Implements a basic HTTP server that supports GET queries.
 
 `HttpUtils.cc`, `ServerSocket.cc`: Handle socket setup and HTTP parsing.
 
+Reader Infrastructure
+`FileIndexReader.c`, `IndexTableReader.c`, `DocIDTableReader.c`: Low-level parsing and validation of on-disk index data via direct FILE* access.
+
 Supports multithreaded processing and dynamic content responses.
+
+On-Disk Index Format
+Document Table: Maps document IDs to filenames.
+
+Word-to-Postings Index: Maps words to documents and their position offsets.
+
+Stored using nested hash tables with position-aware postings lists for efficient lookups.
 
 Index File Format
 Encodes:
