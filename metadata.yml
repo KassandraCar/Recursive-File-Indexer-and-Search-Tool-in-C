@@ -1,0 +1,12 @@
+---
+:id: 254662057
+:submitters:
+- :name: Kassandra Cardenas
+  :email: kassac2@uw.edu
+:created_at: !ruby/object:ActiveSupport::TimeWithZone
+  utc: 2024-05-20 00:05:18.493180000 Z
+  zone: !ruby/object:ActiveSupport::TimeZone
+    name: America/Los_Angeles
+  time: 2024-05-19 17:05:18.493180000 Z
+:status: processed
+:score: 340.0
