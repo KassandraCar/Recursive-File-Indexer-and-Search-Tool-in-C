@@ -72,3 +72,30 @@ Memory Safety: All dynamic allocations are cleaned up. Verified under Valgrind t
 - **Concurrency-Safe Readers**: All file handles are duplicated to avoid contention during multi-index queries.
 - **Error Safety**: All operations are validated with defensive checks (`Verify333`) and fallback recovery to avoid corrupt reads.
 - **Memory Discipline**: All heap allocations are matched with deallocations; verified under Valgrind to ensure zero leaks.
+
+## Test Coverage & Validation
+This project has been tested using an autograder tests covering:
+
+LinkedList and HashTable modules
+
+100% test pass rate for operations such as insertion, deletion, slicing, iteration, and sorting
+
+Verified memory safety using Valgrind (no leaks or invalid accesses)
+
+File Parsing and Indexing Engine
+
+All internal indexing components (DocTableReader, HashTableReader, QueryProcessor, etc.) passed correctness tests
+
+Integration with .idx files validated via unit and functional tests
+
+Multithreaded Web Server (http333d)
+
+All core components (ThreadPool, HttpConnection, ServerSocket, FileReader) tested for correctness and stability
+
+Path safety and HTML escaping functionality verified
+
+✅ Memory safety confirmed via Valgrind in all modules
+✅ Compiled successfully with -Wall -Wpedantic -std=c++17 and no warnings during test runs
+❌ Known issue: filesearchshell CLI currently prints results in incorrect order — functional but not fully formatted
+
+
