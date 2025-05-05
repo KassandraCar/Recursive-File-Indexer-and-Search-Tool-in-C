@@ -10,22 +10,47 @@ from scratch, including custom on-disk data structures, hash table serialization
 ---
 
 ## Project Structure
+ 
+-Indexing Pipeline
+`CrawlFileTree.c`: Recursively traverses a directory to gather documents.
 
-- **Indexing Pipeline**
-  - `CrawlFileTree.c`: Recursively walks the file system and collects documents.
-  - `FileParser.c`, `DocTable.c`, `MemIndex.c`: Tokenize text, assign document IDs, and build the in-memory inverted index.
-  - `WriteIndex.c`: Serializes all index structures into a binary file format, including a CRC checksum.
+`FileParser.c`, `DocTable.c`, `MemIndex.c`: Tokenize files, assign document IDs, and construct an in-memory inverted index.
 
-- **On-Disk Index File Format**
-  - Encodes a document table and a hash table of word-to-postings mappings.
-  - Uses `WriteHashTable()` with nested buckets and position lists for scalable lookups.
+`WriteIndex.c`: Serializes the in-memory index to a compact, binary format with a CRC checksum.
 
-- **Search Engine**
-  - `QueryProcessor.*`: Loads and queries one or more index files using memory-mapped data structures.
-  - `searchshell.c`: Interactive query interface that accepts arbitrary word queries and returns ranked document matches.
+Search Engine
+`QueryProcessor.`: Loads one or more index files and performs ranked multi-word queries.
 
-- **Reader Infrastructure**
-  - `FileIndexReader.c`, `DocIDTableReader.c`, `IndexTableReader.c`: Low-level access to index file components using FILE* I/O with strict format validation.
+`searchshell.c`: Interactive shell for CLI-based search.
+
+HTTP Search Server
+`http333d.cc`, `HttpServer.cc`, `HttpConnection.cc`: Implements a basic HTTP server that supports GET queries.
+
+`HttpUtils.cc`, `ServerSocket.cc`: Handle socket setup and HTTP parsing.
+
+Supports multithreaded processing and dynamic content responses.
+
+Index File Format
+Encodes:
+
+Document table: maps doc IDs to filenames.
+
+Word-to-postings index: maps words to doc IDs and positions.
+
+Uses nested hash tables with position-aware postings lists.
+
+Reader Infrastructure
+
+`FileIndexReader.c`, `IndexTableReader.c`, `DocIDTableReader.c`: Parse and validate on-disk index format using low-level FILE* I/O.
+
+Design Highlights:
+Binary Layout: Compact, network byte order structures ensure fast reads and portability.
+
+Concurrency Safety: Duplicated file handles allow simultaneous reads from multiple index files.
+
+Robustness: Defensive programming via Verify333 and strict offset validation.
+
+Memory Safety: All dynamic allocations are cleaned up. Verified under Valgrind to have zero memory leaks.
 
 ---
 
@@ -35,14 +60,3 @@ from scratch, including custom on-disk data structures, hash table serialization
 - **Concurrency-Safe Readers**: All file handles are duplicated to avoid contention during multi-index queries.
 - **Error Safety**: All operations are validated with defensive checks (`Verify333`) and fallback recovery to avoid corrupt reads.
 - **Memory Discipline**: All heap allocations are matched with deallocations; verified under Valgrind to ensure zero leaks.
-
----
-
-## Example Use
-
-```bash
-# Build and run the indexer
-./filecrawler ./documents/ index.idx
-
-# Launch the search shell with one or more index files
-./filesearchshell index.idx
