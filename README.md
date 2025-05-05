@@ -1,6 +1,6 @@
 # C File Indexer & Search Engine
 
-This project implements a full-text file indexer and search engine in pure C. 
+This project implements a full-text file indexer and search engine in pure C/C++. 
 Given one or more index files (produced by a recursive crawler and tokenizer), 
 the tool supports ranked search queries using an interactive shell. All indexing and searching logic is built 
 from scratch, including custom on-disk data structures, hash table serialization, and inverted index management.
