@@ -76,26 +76,26 @@ Memory Safety: All dynamic allocations are cleaned up. Verified under Valgrind t
 ## Test Coverage & Validation
 This project has been tested using an autograder tests covering:
 
-LinkedList and HashTable modules
+LinkedList / HashTable Modules
 
-100% test pass rate for operations such as insertion, deletion, slicing, iteration, and sorting
+100% test pass rate for insertion, deletion, slicing, sorting, and iteration
 
-Verified memory safety using Valgrind (no leaks or invalid accesses)
+Valgrind: No leaks or invalid accesses
 
-File Parsing and Indexing Engine
+File Parser / Indexer
 
-All internal indexing components (DocTableReader, HashTableReader, QueryProcessor, etc.) passed correctness tests
+All core components (DocTableReader, HashTableReader, QueryProcessor) passed unit and integration tests
 
-Integration with .idx files validated via unit and functional tests
+Tested on small and large .idx files
 
-Multithreaded Web Server (http333d)
+Multithreaded HTTP Server
 
-All core components (ThreadPool, HttpConnection, ServerSocket, FileReader) tested for correctness and stability
-
-Path safety and HTML escaping functionality verified
+All modules (ThreadPool, HttpConnection, ServerSocket) tested for correctness, path safety, and HTML escaping
 
 ✅ Memory safety confirmed via Valgrind in all modules
+
 ✅ Compiled successfully with -Wall -Wpedantic -std=c++17 and no warnings during test runs
+
 ❌ Known issue: filesearchshell CLI currently prints results in incorrect order — functional but not fully formatted
 
 
